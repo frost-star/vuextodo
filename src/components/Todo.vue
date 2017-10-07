@@ -19,7 +19,7 @@ export default {
   },
   computed: {
     todos() {
-      return this.$store.state.todos;
+      return this.$store.getters.getTodos;
     },
   },
   methods: {

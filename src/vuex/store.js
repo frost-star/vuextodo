@@ -31,4 +31,7 @@ export default new Vuex.Store({
       context.commit(REMOVE_TODO, id);
     },
   },
+  getters: {
+    getTodos: state => state.todos,
+  },
 });
