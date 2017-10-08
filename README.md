@@ -1,4 +1,4 @@
-# vuefiretodo
+# vuextodo
 
 > A Vue.js project
 
