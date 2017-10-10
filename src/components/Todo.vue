@@ -1,9 +1,9 @@
 <template lang="html">
     <div id="todo">
       <input type="text" @keyup.enter="addTodo" v-model="todoText"/>
-      <li v-for="todo in todos">
-        {{todo.text}}
-        <button @click="removeTodo(todo.id)">X</button>
+      <li v-for="todo in todos" :key="todo['.key']">
+        {{todo['.value']}}
+        <button @click="removeTodo(todo['.key'])">X</button>
       </li>
     </div>
 </template>
@@ -27,8 +27,8 @@ export default {
       this.$store.dispatch(ADD_TODO, this.todoText);
       this.todoText = '';
     },
-    removeTodo(id) {
-      this.$store.dispatch(REMOVE_TODO, id);
+    removeTodo(key) {
+      this.$store.dispatch(REMOVE_TODO, key);
     },
   },
 };

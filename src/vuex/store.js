@@ -1,8 +1,20 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
+import * as firebase from 'firebase';
+import { firebaseMutations, firebaseAction } from 'vuexfire';
 import { ADD_TODO, REMOVE_TODO } from './action-types';
 
+const config = {
+  databaseURL: 'https://vue-fire-test-3c227.firebaseio.com/',
+};
+const firebaseApp = firebase.initializeApp(config);
+const db = firebaseApp.database();
+const todosRef = db.ref('todo');
+
 Vue.use(Vuex);
+
+const INIT_TODO = 'INIT_TODO';
+const myPlugin = store => store.dispatch(INIT_TODO, 'test');
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
@@ -10,29 +22,21 @@ export default new Vuex.Store({
     todos: [],
   },
   mutations: {
-    [ADD_TODO](state, text) {
-      const todo = {
-        id: 0,
-        text,
-      };
-      if (this.state.todos.length !== 0) {
-        todo.id = this.state.todos[this.state.todos.length - 1].id + 1;
-      }
-      this.state.todos.push(todo);
-    },
-    [REMOVE_TODO](state, id) {
-      this.state.todos = this.state.todos.filter(todo => id !== todo.id);
-    },
+    ...firebaseMutations,
   },
   actions: {
-    [ADD_TODO](context, text) {
-      context.commit(ADD_TODO, text);
-    },
-    [REMOVE_TODO](context, id) {
-      context.commit(REMOVE_TODO, id);
-    },
+    [INIT_TODO]: firebaseAction(({ bindFirebaseRef }) => {
+      bindFirebaseRef('todos', todosRef, { wait: true });
+    }),
+    [ADD_TODO]: firebaseAction(({ state, bindFirebaseRef }, text) => {
+      todosRef.push(text).then(() => bindFirebaseRef('todos', todosRef, { wait: true }));
+    }),
+    [REMOVE_TODO]: firebaseAction(({ bindFirebaseRef }, key) => {
+      todosRef.child(key).remove().then(() => bindFirebaseRef('todos', todosRef, { wait: true }));
+    }),
   },
   getters: {
     getTodos: state => state.todos,
   },
+  plugins: [myPlugin],
 });
