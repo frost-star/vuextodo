@@ -28,11 +28,11 @@ export default new Vuex.Store({
     [INIT_TODO]: firebaseAction(({ bindFirebaseRef }) => {
       bindFirebaseRef('todos', todosRef, { wait: true });
     }),
-    [ADD_TODO]: firebaseAction(({ state, bindFirebaseRef }, text) => {
-      todosRef.push(text).then(() => bindFirebaseRef('todos', todosRef, { wait: true }));
+    [ADD_TODO]: firebaseAction((context, text) => {
+      todosRef.push(text);
     }),
-    [REMOVE_TODO]: firebaseAction(({ bindFirebaseRef }, key) => {
-      todosRef.child(key).remove().then(() => bindFirebaseRef('todos', todosRef, { wait: true }));
+    [REMOVE_TODO]: firebaseAction((context, key) => {
+      todosRef.child(key).remove();
     }),
   },
   getters: {
