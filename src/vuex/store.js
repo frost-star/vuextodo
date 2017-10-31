@@ -3,11 +3,9 @@ import Vue from 'vue';
 import * as firebase from 'firebase';
 import { firebaseMutations, firebaseAction } from 'vuexfire';
 import { ADD_TODO, REMOVE_TODO } from './action-types';
+import firebaseConfig from '../firebase-config';
 
-const config = {
-  databaseURL: 'https://vue-fire-test-3c227.firebaseio.com/',
-};
-const firebaseApp = firebase.initializeApp(config);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebaseApp.database();
 const todosRef = db.ref('todo');
 
