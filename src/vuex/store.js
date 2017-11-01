@@ -5,8 +5,8 @@ import { firebaseMutations, firebaseAction } from 'vuexfire';
 import { ADD_TODO, REMOVE_TODO } from './action-types';
 import firebaseConfig from '../firebase-config';
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-const db = firebaseApp.database();
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 const todosRef = db.ref('todo');
 
 Vue.use(Vuex);
