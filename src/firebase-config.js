@@ -1,4 +1,3 @@
-// TODO 公開しないように
 export default {
   apiKey: '<API_KEY>',
   authDomain: '<PROJECT_ID>.firebaseapp.com',
